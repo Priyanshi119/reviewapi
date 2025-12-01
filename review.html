@@ -2,18 +2,67 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Loading…</title>
+  <title>Leave a Review</title>
   <style>
-    body { margin: 0; background: #ffffff; }
-    #msg { font-size: 14px; color: #777; text-align: center; margin-top: 20px; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: white;
+      padding: 40px 60px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      text-align: center;
+      max-width: 400px;
+    }
+
+    h1 {
+      font-size: 24px;
+      color: #202124;
+      margin-bottom: 20px;
+    }
+
+    p {
+      font-size: 16px;
+      color: #5f6368;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      display: inline-block;
+      background-color: #1a73e8;
+      color: white;
+      font-size: 16px;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.2s;
+    }
+
+    .btn:hover {
+      background-color: #1669c1;
+    }
   </style>
 </head>
 <body>
 
-<div id="msg">Loading…</div>
+<div class="container">
+  <h1>We Value Your Feedback!</h1>
+  <p>Click the button below to write a review and let us copy a suggested review for you.</p>
+  <button class="btn" id="reviewBtn">Write a Review</button>
+  <div id="msg" style="margin-top: 20px; color: #555;"></div>
+</div>
 
 <script>
-  // Prebuilt random reviews
   const reviews = [
     "Amazing experience! Highly recommended.",
     "Great service, very professional and friendly.",
@@ -22,26 +71,26 @@
     "Really satisfied with the service. 5 stars!"
   ];
 
-  // Pick a random one
-  const randomReview = reviews[Math.floor(Math.random() * reviews.length)];
+  const reviewBtn = document.getElementById("reviewBtn");
+  const msg = document.getElementById("msg");
 
-  // Copy + Redirect
-  async function run() {
+  reviewBtn.addEventListener("click", async () => {
+    // Pick a random review
+    const randomReview = reviews[Math.floor(Math.random() * reviews.length)];
+
+    // Try to copy it
     try {
       await navigator.clipboard.writeText(randomReview);
-      document.getElementById("msg").innerText = "Copied ✓ Redirecting…";
+      msg.innerText = `Copied review: "${randomReview}" ✓ Redirecting…`;
     } catch {
-      document.getElementById("msg").innerText = "Copy failed. Please copy manually.";
+      msg.innerText = "Copy failed. Please copy manually. Redirecting…";
     }
 
-    // Redirect after 1 second
+    // Redirect after 1.5 seconds
     setTimeout(() => {
-      window.location.href =
-        "https://search.google.com/local/writereview?placeid=ChIJ22-Un5M9mjkRoL_5O3Fszvs";
-    }, 1000);
-  }
-
-  run();
+      window.location.href = "https://search.google.com/local/writereview?placeid=ChIJ22-Un5M9mjkRoL_5O3Fszvs";
+    }, 1500);
+  });
 </script>
 
 </body>
