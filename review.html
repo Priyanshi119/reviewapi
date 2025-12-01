@@ -51,15 +51,29 @@
     .btn:hover {
       background-color: #1669c1;
     }
+
+    #msg {
+      margin-top: 20px;
+      color: #555;
+      word-break: break-word;
+    }
+
+    #manualCopy {
+      display: none;
+      margin-top: 10px;
+      padding: 8px;
+      width: 100%;
+    }
   </style>
 </head>
 <body>
 
 <div class="container">
   <h1>We Value Your Feedback!</h1>
-  <p>Click the button below to write a review and let us copy a suggested review for you.</p>
+  <p>Click the button below to copy a suggested review and write it on Google.</p>
   <button class="btn" id="reviewBtn">Write a Review</button>
-  <div id="msg" style="margin-top: 20px; color: #555;"></div>
+  <input type="text" id="manualCopy" readonly>
+  <div id="msg"></div>
 </div>
 
 <script>
@@ -73,23 +87,27 @@
 
   const reviewBtn = document.getElementById("reviewBtn");
   const msg = document.getElementById("msg");
+  const manualCopy = document.getElementById("manualCopy");
 
   reviewBtn.addEventListener("click", async () => {
-    // Pick a random review
     const randomReview = reviews[Math.floor(Math.random() * reviews.length)];
 
-    // Try to copy it
     try {
       await navigator.clipboard.writeText(randomReview);
       msg.innerText = `Copied review: "${randomReview}" ✓ Redirecting…`;
-    } catch {
-      msg.innerText = "Copy failed. Please copy manually. Redirecting…";
+    } catch (err) {
+      // Show manual copy input if clipboard fails
+      manualCopy.style.display = "block";
+      manualCopy.value = randomReview;
+      manualCopy.select();
+      manualCopy.setSelectionRange(0, 99999); // for mobile
+      msg.innerText = `Automatic copy failed. Please copy manually and then the page will redirect…`;
     }
 
-    // Redirect after 1.5 seconds
+    // Redirect after 2 seconds
     setTimeout(() => {
       window.location.href = "https://search.google.com/local/writereview?placeid=ChIJ22-Un5M9mjkRoL_5O3Fszvs";
-    }, 1500);
+    }, 2000);
   });
 </script>
 
