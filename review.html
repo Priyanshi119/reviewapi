@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Loading…</title>
+  <style>
+    body { margin: 0; background: #ffffff; }
+    #msg { font-size: 14px; color: #777; text-align: center; margin-top: 20px; }
+  </style>
+</head>
+<body>
+
+<div id="msg">Loading…</div>
+
+<script>
+  // Prebuilt random reviews
+  const reviews = [
+    "Amazing experience! Highly recommended.",
+    "Great service, very professional and friendly.",
+    "Super smooth process. Loved it!",
+    "Fantastic quality and timely delivery.",
+    "Really satisfied with the service. 5 stars!"
+  ];
+
+  // Pick a random one
+  const randomReview = reviews[Math.floor(Math.random() * reviews.length)];
+
+  // Copy + Redirect
+  async function run() {
+    try {
+      await navigator.clipboard.writeText(randomReview);
+      document.getElementById("msg").innerText = "Copied ✓ Redirecting…";
+    } catch {
+      document.getElementById("msg").innerText = "Copy failed. Please copy manually.";
+    }
+
+    // Redirect after 1 second
+    setTimeout(() => {
+      window.location.href =
+        "https://search.google.com/local/writereview?placeid=ChIJ22-Un5M9mjkRoL_5O3Fszvs";
+    }, 1000);
+  }
+
+  run();
+</script>
+
+</body>
+</html>
